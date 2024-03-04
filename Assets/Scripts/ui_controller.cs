@@ -12,6 +12,7 @@ public class ui_controller : MonoBehaviour
     public Text distancia_text;
     public int coin;
     public Text text_coin;
+    public Text text_lives;
 
     // Variáveis de UI
     public GameObject hearth;
@@ -26,14 +27,7 @@ public class ui_controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var = GameObject.FindGameObjectWithTag("Player").GetComponent<player_controller>();
-        // Instanciando a imagem hearth na UI
-        for (int i = 2; i <= var.vida; i++) 
-        {
-            GameObject hearth_instance = Instantiate(hearth, canvas.transform);
-            hearth_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(-33 * i,-30);
-            hearth_instance.name = "hearth"+i.ToString();
-        }
+
     }
 
     // Update is called once per frame
@@ -55,15 +49,11 @@ public class ui_controller : MonoBehaviour
         if(var.vida_add)
         {
             var.vida++;
-            GameObject hearth_instance = Instantiate(hearth, canvas.transform);
-            hearth_instance.GetComponent<RectTransform>().anchoredPosition = new Vector2(-33 * var.vida,-30);
-            hearth_instance.name = "hearth"+var.vida.ToString();
             var.vida_add = false;
         }
         if(var.vida_remove)
         {
             var.vida_remove = false;
-            Destroy(GameObject.Find("hearth"+var.vida.ToString()));
             var.vida--;
         }
 
@@ -73,6 +63,7 @@ public class ui_controller : MonoBehaviour
             attencion.text = mw_var.Attention.ToString();
             meditation.text = mw_var.Meditation.ToString();
         }
+        text_lives.text = var.vida.ToString();
     }
 
     public void add_coin()
