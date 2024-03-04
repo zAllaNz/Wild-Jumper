@@ -9,13 +9,14 @@ using UnityEngine.UI;
 public class player_data : MonoBehaviour
 {
     private TittleButton tittle;
-    private string name;
+    private new string name = "";
 
-    // Acessando as vari�veis do script do mind wave
+    // Acessando as variaveis do script do mind wave
     private mind_wave mind;
     public string cena_gameplay;
     public bool cena_certa = false;
     public string file_name = @"";
+    public string diretorio = Application.dataPath;
     private string cena_atual;
     private string teste;
     private player_controller player;
@@ -53,10 +54,30 @@ public class player_data : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    // Configurando o diret�rio e o nome do arquivo
+    // Configurando o diretorio e o nome do arquivo
     public string Create_File()
     {
-        file_name += @"C:\Users\USER\Desktop\Jogo\Wilder_Jump\Data\" + name.ToString() + ".csv";
+        // Se a variável name estiver vazia renomeie ela
+        if(name == "")
+        {
+            name = "sem_nome";
+        }
+        file_name += diretorio + @"\Data\" + name.ToString() + ".csv";
+
+        // Se tiver um arquivo com o mesmo nome na pasta não sobreescrever
+        string pasta = diretorio + @"\Data\";
+        if (Directory.Exists(pasta))
+        {
+            string[] arquivos = Directory.GetFiles(pasta);
+            foreach(string arquivo in arquivos)
+            {
+                if(file_name == arquivo)
+                {
+                    name += "_";
+                    file_name = diretorio + @"\Data\" + name.ToString() + ".csv";
+                }
+            }
+        }
         string file = Headers(file_name);
         return file;
     }

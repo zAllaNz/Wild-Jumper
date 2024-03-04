@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class controller_scenario : MonoBehaviour
@@ -32,8 +33,8 @@ public class controller_scenario : MonoBehaviour
     private bool troca_ambient = false;
 
     // Criando os obstáculos
-    public GameObject[] obstacles; // Array contendo os obstáculos pré-selecionados
-    public List<float> spawn_points = new List<float> {-1.4f,-0.2f,1f}; // Pontos de spawn para os obstáculos
+    public List<GameObject> obstacles; // Array contendo os obstáculos pré-selecionados
+    public List<float> spawn_points = new List<float> {-1.4f,0f,1,4f}; // Pontos de spawn para os obstáculos
     public float difficultyIncreaseRate = 10f; // Taxa de aumento da dificuldade
     public float initialSpawnDelay = 1f; // Tempo inicial entre o instanciamento de obstáculos
     public float spawnDelayReduction = 0.2f; // Redução do tempo entre o instanciamento de obstáculos ao aumentar a dificuldade
@@ -267,7 +268,7 @@ public class controller_scenario : MonoBehaviour
         select_point(spawn_points_alt);
 
         // Selecionando o obstaculo
-        var random_obstacle = Random.Range(0,obstacles.Length);
+        var random_obstacle = Random.Range(0,obstacles.Count);
         selected_obstacle = obstacles[random_obstacle];
         var selected_obstacle_name = selected_obstacle.name;
         Debug.Log(random_obstacle);
@@ -276,7 +277,7 @@ public class controller_scenario : MonoBehaviour
         // Numero de obstaculos e Espaçamento dos obstáculos
         if(var.dificuldade == 1)
         {
-            obstacles_number = var.dificuldade;
+            obstacles_number = 3; // TEMPORÁRIO --------------
             obstacles_z += 15;
         }
         else if(var.dificuldade == 2)
@@ -298,261 +299,388 @@ public class controller_scenario : MonoBehaviour
         switch(selected_obstacle_name){
             // Obstaculos pulaveis
             case "traffic_pot":
-                // Instancia 3 ou menos obstaculos
-                if(obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for(int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "traffic"
+                    if (var.dificuldade == 4 && j > 1)
                     {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic");
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if(j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    else
+                    {
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.16f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-                // Intancia obstaculo especial na dificuldade 4
-            break;
+                break;
 
             case "traffic":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "traffic pot"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_pot");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.16f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "pot_tree":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "bench"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "bench");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "trash":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "trashcan"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "trashcan");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.16f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
-
-            case "trash_bag":
-                if (obstacles_number <= 3)
-                {
-                    for (int j = 0; j < obstacles_number; j++)
-                    {
-                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
-                    }
-                }
-            break;
+                break;
 
             case "trashcan":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "trash"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "trash");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.16f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "wood_pot":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
-                    {
-                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
-                    }
+                    Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                    Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.16f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "hydrant":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "traffic"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.16f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "wall":
-                if (obstacles_number <= 2)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    if ((var.dificuldade <= 2 && j < 1) || (var.dificuldade >= 3 && j < 2))
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x + 0.65f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
+                    else if (var.dificuldade <= 2)
+                    {
+                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
+                    {
+                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "bench":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "pot_tree"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "pot_tree");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-            break;
+                break;
 
             case "gravestone":
-                if (obstacles_number <= 2)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "pumpkin"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "pumpkin");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-             break;
+                break;
 
              case "desert_column":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "ram sharp"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "ram_sharp");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-             break;
+                break;
 
              case "desert_temple":
-                if (obstacles_number <= 2)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    if((var.dificuldade <= 2 && j < 1) || (var.dificuldade >= 3 && j < 2))
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    else if (var.dificuldade <= 2)
+                    {
+                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
+                    {
+                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    select_point(spawn_points_alt);
                 }
              break;
 
              case "pumpkin":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "gravestone"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "gravestone");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-             break;
+                break;
 
              case "ram_sharp":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "desert column"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "desert column");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-             break;
+                break;
 
              case "skull":
-                if (obstacles_number <= 3)
+                for (int j = 0; j < obstacles_number; j++)
                 {
-                    for (int j = 0; j < obstacles_number; j++)
+                    // Se a dificuldade for expert trocar um objeto por "zombie hand"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "zombie_hand");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
                         Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
-                        if (j < 2)
-                        {
-                            select_point(spawn_points_alt);
-                        }
                     }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
                 }
-             break;
+                break;
 
              case "zombie_hand":
+                for (int j = 0; j < obstacles_number; j++)
+                {
+                    // Se a dificuldade for expert trocar um objeto por "skull"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "skull");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
+                    {
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
+                }
+                break;
+
+            case "shopping_cart":
+                for (int j = 0; j < obstacles_number; j++)
+                {
+                    // Se a dificuldade for expert trocar um objeto por "trash"
+                    if (var.dificuldade == 4 && j > 1)
+                    {
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "trash");
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
+                    {
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    // Trocar o ponto de instanciar
+                    select_point(spawn_points_alt);
+                }
+                break;
+
+            case "street_seller":
+                for (int j = 0; j < obstacles_number; j++)
+                {
+                    if ((var.dificuldade <= 2 && j < 1) || (var.dificuldade >= 3 && j < 2))
+                    {
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x + 0.1f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else if (var.dificuldade <= 2)
+                    {
+                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    else
+                    {
+                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
+                        Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                    }
+                    select_point(spawn_points_alt);
+                }
+                break;
+
+            case "traffic_warning":
+                // ALTERAR AQUI POSTERIORMENTE ------------------------------
                 if (obstacles_number <= 3)
                 {
                     for (int j = 0; j < obstacles_number; j++)
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x-0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                         if (j < 2)
                         {
                             select_point(spawn_points_alt);
                         }
                     }
                 }
-             break;
+            break;
         }
 
         // Criando as moedas
@@ -572,7 +700,10 @@ public class controller_scenario : MonoBehaviour
 
     void select_point(List<float> spawn_points_alt)
     {
-        obstacles_x = spawn_points_alt[Random.Range(0, spawn_points_alt.Count)];
-        spawn_points_alt.Remove(obstacles_x);
+        if(spawn_points_alt.Count != 0)
+        {
+            obstacles_x = spawn_points_alt[Random.Range(0, spawn_points_alt.Count)];
+            spawn_points_alt.Remove(obstacles_x);
+        }
     }
 }

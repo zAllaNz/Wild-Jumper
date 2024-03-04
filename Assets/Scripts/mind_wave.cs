@@ -19,8 +19,17 @@ public class mind_wave : MonoBehaviour
     public static int blink = 0;
     public bool control = false;
     public bool conectado;
+
+    public int hud_attention;
+    public int hud_meditation;
+    public int hud_count;
+    private player_data data;
+    private bool cena;
+
     void Start()
     {
+        data = FindObjectOfType<player_data>();
+        StartCoroutine(Salva_dados());
     }
     void Update()
     {
@@ -29,25 +38,7 @@ public class mind_wave : MonoBehaviour
             MindwaveManager.Instance.Controller.OnUpdateMindwaveData += OnUpdateMindwaveData;
             Connect();
         }
-        if(BlinkStrength != 0)
-        {
-            blink++;
-        }
-        
-        sStatus = Status = m_MindwaveData.status;
-        sSignal = Signal = m_MindwaveData.poorSignalLevel;
-        sAttention = Attention = m_MindwaveData.eSense.attention;
-        sMeditation = Meditation = m_MindwaveData.eSense.meditation;
-        sDelta = Delta = m_MindwaveData.eegPower.delta;
-        sTheta = Theta = m_MindwaveData.eegPower.theta;
-        sLowAlpha = LowAlpha = m_MindwaveData.eegPower.lowAlpha;
-        sHighAlpha = HighAlpha = m_MindwaveData.eegPower.highAlpha;
-        sLowBeta = LowBeta = m_MindwaveData.eegPower.lowBeta;
-        sHighBeta = HighBeta = m_MindwaveData.eegPower.highBeta;
-        sLowGamma = LowGamma = m_MindwaveData.eegPower.lowGamma;
-        sHighGamma = HighGamma = m_MindwaveData.eegPower.highGamma;
-        sEEGValue = EEGValue = m_EEGValue;
-        sBlinkStrength = BlinkStrength = m_BlinkStrength;
+        cena = data.cena_certa;
     }
 
     public void OnUpdateMindwaveData(MindwaveDataModel _Data)
@@ -93,5 +84,37 @@ public class mind_wave : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
+    }
+
+    IEnumerator Salva_dados()
+    {
+        while (true)
+        {
+            // Pega os valores do mindwave e salva em variáveis
+            sStatus = Status = m_MindwaveData.status;
+            sSignal = Signal = m_MindwaveData.poorSignalLevel;
+            sAttention = Attention = m_MindwaveData.eSense.attention;
+            sMeditation = Meditation = m_MindwaveData.eSense.meditation;
+            sDelta = Delta = m_MindwaveData.eegPower.delta;
+            sTheta = Theta = m_MindwaveData.eegPower.theta;
+            sLowAlpha = LowAlpha = m_MindwaveData.eegPower.lowAlpha;
+            sHighAlpha = HighAlpha = m_MindwaveData.eegPower.highAlpha;
+            sLowBeta = LowBeta = m_MindwaveData.eegPower.lowBeta;
+            sHighBeta = HighBeta = m_MindwaveData.eegPower.highBeta;
+            sLowGamma = LowGamma = m_MindwaveData.eegPower.lowGamma;
+            sHighGamma = HighGamma = m_MindwaveData.eegPower.highGamma;
+            sEEGValue = EEGValue = m_EEGValue;
+            sBlinkStrength = BlinkStrength = m_BlinkStrength;
+
+            // teste
+            if (cena)
+            {
+                hud_attention += Mathf.RoundToInt(sAttention);
+                hud_meditation += Mathf.RoundToInt(sMeditation);
+                hud_count++;
+            }
+
+            yield return new WaitForSeconds(1);
+        }
     }
 }
