@@ -8,11 +8,11 @@ using static UnityEditor.Experimental.GraphView.Port;
 public class player_controller : MonoBehaviour {
 
     // Variáveis publicas
-    public float vel_move = 3.5f;
+    private float vel_move = 3.5f;
     public float jumpForce = 8f;
     public float gravity = 20f;
     //padrão 5f
-    public float vel = 10f;
+    public float vel = 5f;
 
     // Referência ao CharacterController
     private CharacterController controller;
@@ -24,7 +24,6 @@ public class player_controller : MonoBehaviour {
     public LayerMask layer;
     public LayerMask layer_coletavel;
     public float raio_colisao;
-    public ParticleSystem particle_system;
 
     // Variáveis de controle do player
     private bool exec_jump = false;
@@ -33,7 +32,7 @@ public class player_controller : MonoBehaviour {
     public bool vida_remove = false;
     public float tempo;
     private int coins = 0;
-    private int media_attencion;
+    private int media_attention;
     private int media_meditation;
     private float tempo_media;
 
@@ -48,12 +47,16 @@ public class player_controller : MonoBehaviour {
     public bool troca_dificuldade = false;
     private float vel_nova = 5f;
 
+    private int timer_max = 20;
+    private int timer = 0;
+
     void Start () {
         controller = GetComponent<CharacterController>();
         anim_player = GetComponent<Animator>();
         ui_control = FindObjectOfType<ui_controller>();
         mind = GameObject.FindWithTag("Mind").GetComponent<mind_wave>();
         vida = 3;
+        InvokeRepeating("chance_difficult", 1f, 1f);
     }
 
     void Update()
@@ -85,26 +88,20 @@ public class player_controller : MonoBehaviour {
             }
         }
 
+        /*
         // Controle da velocidade horizontal e vertical de acordo com os dados do mind wave
         if (time_atual >= intervalo && !player_dead)
         {
             // Atualizando a velocidade vertical de acordo com a media dos valores do mind wave pelo intervalo de 10s
-            media_attencion = media_attencion / (int)Mathf.Round(intervalo);
-            vel_nova = 10f + media_attencion * 0.6f;
+            media_attention = media_attention / (int)Mathf.Round(intervalo);
+            vel_nova = 5f + media_attention * 0.6f;
 
             // Atualizando a velocidade vertical de acordo com a media dos valores do mind wave pelo intervalo de 10s
             media_meditation = media_meditation / (int)Mathf.Round(intervalo);
             vel_move = 3.5f + media_meditation * 0.25f;
 
-            // Atualizando a quantidade de particulas -- ARRUMAR PARA ATUALIZAR OS VALORES DE ACORDO COM OS NIVEIS DE ATENCAO
-            if (particle_system != null)
-            {
-                var emission = particle_system.emission;
-                emission.rateOverTime = 50f;
-            }
-
             // Alterando a dificuldade do jogo de acordo com os valores do mind wave
-            int soma = Mathf.CeilToInt(((media_attencion + media_meditation) / 25) / 2);
+            int soma = Mathf.CeilToInt(((media_attention + media_meditation) / 25) / 2);
             if (soma != 0 && dificuldade != soma)
             {
                 dificuldade = soma;
@@ -112,18 +109,19 @@ public class player_controller : MonoBehaviour {
             }
 
             // Resetar o tempo para entrar na condicional novamente
-            media_attencion = 0;
+            media_attention = 0;
             media_meditation = 0;
             time_atual = 0f;
         }
         else if (tempo_media >= 1)
         {
-            int attention = Mathf.FloorToInt(mind.Attention / 10f);
-            int meditation = Mathf.FloorToInt(mind.Meditation / 10f);
-            media_attencion += attention;
+            int attention = Mathf.FloorToInt(mind.Attention);
+            int meditation = Mathf.FloorToInt(mind.Meditation);
+            media_attention += attention;
             media_meditation += meditation;
             tempo_media = 0;
         }
+        */
 
         // Aplica a gravidade ao vetor de movimento
         moveDirection.y -= gravity * Time.deltaTime;
@@ -220,5 +218,26 @@ public class player_controller : MonoBehaviour {
     public void game_over(){
         SceneManager.LoadScene("Gameover");
     }
-
+    
+    void chance_difficult()
+    {
+        timer++;
+        int attention = (int)mind.Attention;
+        int meditation = (int)mind.Meditation;
+        media_attention += attention;
+        media_meditation += meditation;
+        if(timer >= timer_max && !player_dead)
+        {
+            media_attention = (media_attention / timer_max) / 10;
+            vel_nova = 5f + media_attention * 0.6f;
+            media_meditation = (media_meditation / timer_max) / 10;
+            vel_move = 3.5f + media_meditation * 0.25f;
+            int soma = Mathf.CeilToInt(((media_attention + media_meditation) / 2) / 2.5f);
+            timer = 0;
+            media_attention = 0;
+            media_meditation = 0;
+            dificuldade = soma;
+            troca_dificuldade = true;
+        }
+    }
 }
