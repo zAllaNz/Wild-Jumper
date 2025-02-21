@@ -277,21 +277,21 @@ public class controller_scenario : MonoBehaviour
         // Numero de obstaculos e Espaçamento dos obstáculos
         if(var.dificuldade == 1)
         {
-            obstacles_number = 3; // TEMPORÁRIO --------------
+            obstacles_number = 1;
             obstacles_z += 15;
         }
         else if(var.dificuldade == 2)
         {
-            obstacles_number = Random.Range(1, var.dificuldade+1);
+            obstacles_number = Random.Range(1, var.dificuldade);
             obstacles_z += 12;
         }
         else if (var.dificuldade == 3)
         {
-            obstacles_number = Random.Range(1, var.dificuldade+1);
+            obstacles_number = Random.Range(1, var.dificuldade);
             obstacles_z += 9;
         }
         else{
-            obstacles_number = Random.Range(2, var.dificuldade+1);
+            obstacles_number = Random.Range(2, var.dificuldade-1);
             obstacles_z += 7;
         }
         
@@ -441,14 +441,14 @@ public class controller_scenario : MonoBehaviour
                         // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
                         GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
                     else
                     {
                         // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
                         GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
                     select_point(spawn_points_alt);
                 }
@@ -527,14 +527,14 @@ public class controller_scenario : MonoBehaviour
                         // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
                         GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
                     else
                     {
                         // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
                         GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
                     select_point(spawn_points_alt);
                 }
@@ -650,17 +650,17 @@ public class controller_scenario : MonoBehaviour
                     }
                     else if (var.dificuldade <= 2)
                     {
-                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        // Cria um "traffic warning" no lugar do "street_seller" independente da posição no array
                         GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
                     else
                     {
-                        // Cria um "traffic warning" no lugar do "desert temple" independente da posição no array
+                        // Cria um "traffic warning" no lugar do "street_seller" independente da posição no array
                         GameObject selected_obstacle = obstacles.Find(objeto => objeto.name == "traffic_warning");  // Posição do "traffic warning" na lista de obstaculos
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x - 0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                     }
                     select_point(spawn_points_alt);
                 }
@@ -673,7 +673,7 @@ public class controller_scenario : MonoBehaviour
                     for (int j = 0; j < obstacles_number; j++)
                     {
                         Transform selected_spawn_point = selected_obstacle.GetComponent<Transform>();
-                        Instantiate(selected_obstacle, new Vector3(obstacles_x-0.6f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
+                        Instantiate(selected_obstacle, new Vector3(obstacles_x-0.9f, selected_spawn_point.position.y, obstacles_z), selected_spawn_point.rotation);
                         if (j < 2)
                         {
                             select_point(spawn_points_alt);

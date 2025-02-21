@@ -16,7 +16,7 @@ public class player_data : MonoBehaviour
     public string cena_gameplay;
     public bool cena_certa = false;
     public string file_name = @"";
-    public string diretorio = Application.dataPath;
+    private string diretorio = Application.dataPath;
     private string cena_atual;
     private string teste;
     private player_controller player;
